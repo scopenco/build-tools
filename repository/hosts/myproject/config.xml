@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project 
+        name="myproject"
+        summary="My First Project"
+        repository="http://repo.domain.com/pub/repo/"
+        version="0.1"
+        >
+
+  <role path="roles/minimal.xml" />
+
+  <package name="httpd" />
+  <package name="php-mysql" />
+  <package name="mysql-server" />
+
+  <role path="repos/centos-base.xml" />
+  <role path="repos/centos-updates.xml" />
+
+</project>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<role title='@core package list' >
+
+  <package name="SysVinit" />
+  <package name="authconfig" />
+  <package name="basesystem" />
+  <package name="bash" />
+  <package name="centos-release" />
+  <package name="coreutils" />
+  <package name="cpio" />
+  <package name="e2fsprogs" />
+  <package name="ed" />
+  <package name="redhat-logos" />
+  <package name="centos-release-notes" />
+  <package name="file" />
+  <package name="filesystem" />
+  <package name="glibc" />
+  <package name="grub" />
+  <package name="hdparm" />
+  <package name="initscripts" />
+  <package name="iproute" />
+  <package name="iputils" />
+  <package name="kbd" />
+  <package name="kudzu" />
+  <package name="libgcc" />
+  <package name="libtermcap" />
+  <package name="libhugetlbfs" />
+  <package name="mkinitrd" />
+  <package name="openssh-clients" />
+  <package name="openssh-server" />
+  <package name="passwd" />
+  <package name="policycoreutils" />
+  <package name="prelink" />
+  <package name="procps" />
+  <package name="readline" />
+  <package name="rootfiles" />
+  <package name="rpm" />
+  <package name="setserial" />
+  <package name="setup" />
+  <package name="shadow-utils" />
+  <package name="sysfsutils" />
+  <package name="sysklogd" />
+  <package name="termcap" />
+  <package name="util-linux" />
+  <package name="vim-minimal" />
+  <package name="yum" />
+  <package name="kernel" />
+
+</role>

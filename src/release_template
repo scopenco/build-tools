@@ -1,0 +1,32 @@
+#start release spec file
+
+Summary: %(summary)s
+Name: release-%(name)s
+Version: %(version)s
+Release: 1
+License: GPL
+Group: %(name)s
+BuildRoot: %%{_tmppath}/%%{name}-%%{version}-%%{release}-root
+BuildArch: noarch
+Requires: yum
+
+%%description
+%(summary)s
+
+%%install
+%%{__rm} -rf %%{buildroot}
+%%{__mkdir_p} %%{buildroot}%%{_sysconfdir}/yum.repos.d
+%%{__cat} > %%{buildroot}%%{_sysconfdir}/yum.repos.d/%(name)s.repo << END
+[%(name)s]
+name=project %(name)s version %(version)s
+baseurl=%(repository)s
+gpgcheck=0
+enable=1
+END
+
+%%clean
+%%{__rm} -rf %%{buildroot}
+
+%%files
+%%defattr(644,root,root)
+%%{_sysconfdir}/yum.repos.d/%(name)s.repo

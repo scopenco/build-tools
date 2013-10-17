@@ -1,33 +1,23 @@
-constructor
-===========
+------------------
+BUILD-TOOLS README
+------------------
+
 
 Documentation
 --------
 For installation instructions and information on the design overview
-of the constructor, please read the documentation that is found here 
+of the build-tools scripts, please read the documentation that is found here 
 and on wiki.
 
 Purpose
 -------
-This utility allow to construct Yum repository with metapackage from any of public/private repositories on the base of xml specifications (roles). Roles describe a set of required packages and repositories from which these packages with dependencies should be downloaded into a local repository. Attributes in xml roles allow to differentiate and versioning service environment.
-
-Support OS:
---------
-- RHEL >= 5.0
-- CentOS >= 5.0
-- Fedora >= 13
-- Scientific >= 5.0
-
-Dependences
---------
-- python 
-- createrepo
-- rpm-build
-- yum = 3.2.22 (CentOS 5)
+The purpose of this scripts is to create rpm collections(yum repositories). 
+Package collections are defined in separate xml roles.
 
 Contents
 --------
 
+  1) README              - This file.
   2) ChangeLog           - Project's changelog.
   3) build-tools.spec    - Spec file for rpm building.
   4) repository          - Example of project repository with xml specs (roles),
@@ -68,4 +58,4 @@ working, first try searching wiki.
 If all else fails, you can email me and I'll try and respond as
 soon as I get a chance.
 
-        -- Andrey V. Scopenco (andrey@scopenco.net)
+        -- Andrey V. Scopenco (ascopenco@gmail.com)
