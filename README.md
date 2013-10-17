@@ -28,23 +28,23 @@ Dependences
 Contents
 --------
 
-  2) ChangeLog           - Project's changelog.
-  3) build-tools.spec    - Spec file for rpm building.
-  4) repository          - Example of project repository with xml specs (roles),
-                           in roles can/should be described: project, packages, 
-                           yum repositories.
-  5) src/build.sh        - shell script for project building. Its example 
-                           that can be changed for your need.
-  6) src/constructor.py  - constructor's main script. It realize base logic 
-                           of rpm filding and download
-  7) src/gen_spec.py     - constructor's spec generator script. It create project
-                           and release spec file need for meta rpm and yum 
-                           repository rpm  
-  8) src/get_info.py     - constructor's get information script. It's usefull
-                           for shell scripts like build.sh and get project 
-                           information like project name, type, version, 
-                           release etc.
-  9) src/modules         - constructor's modules directory
+- ChangeLog           - Project's changelog.
+- build-tools.spec    - Spec file for rpm building.
+- repository          - Example of project repository with xml specs (roles),
+                        in roles can/should be described: project, packages, 
+                        yum repositories.
+- src/build.sh        - shell script for project building. Its example 
+                        that can be changed for your need.
+- src/constructor.py  - constructor's main script. It realize base logic 
+                        of rpm filding and download
+- src/gen_spec.py     - constructor's spec generator script. It create project
+                        and release spec file need for meta rpm and yum 
+                        repository rpm  
+- src/get_info.py     - constructor's get information script. It's usefull
+                        for shell scripts like build.sh and get project 
+                        information like project name, type, version, 
+                        release etc.
+- src/modules         - constructor's modules directory
 
 
 Installing
@@ -57,12 +57,12 @@ Running
 -------
 
 you can run sync.sh or you build script with args:
-> sync.sh 
+> ./sync.sh 
 
 Questions?
 ----------
 
-If you have questions about build-tools, or problems getting things
+If you have questions about cunstructor, or problems getting things
 working, first try searching wiki.
 
 If all else fails, you can email me and I'll try and respond as
