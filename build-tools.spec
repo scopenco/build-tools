@@ -3,7 +3,7 @@
 
 Summary: tools for build creation
 Name: build-tools
-Version: 1.1
+Version: 1.4
 Release: 1
 Packager: Andrey V. Scopenco <andrey@scopenco.net>
 License: GPL

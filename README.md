@@ -1,10 +1,10 @@
-constructor
+build-tools
 ===========
 
 Documentation
 --------
 For installation instructions and information on the design overview
-of the constructor, please read the documentation that is found here 
+of the build-tools scripts, please read the documentation that is found here 
 and on wiki.
 
 Purpose
@@ -62,7 +62,7 @@ you can run sync.sh or you build script with args:
 Questions?
 ----------
 
-If you have questions about cunstructor, or problems getting things
+If you have questions about build-tools, or problems getting things
 working, first try searching wiki.
 
 If all else fails, you can email me and I'll try and respond as
