@@ -20,7 +20,7 @@ Support OS:
 
 Dependences
 --------
-- python 
+- python >= 2.4.3
 - createrepo
 - rpm-build
 - yum = 3.2.22 (CentOS 5)
