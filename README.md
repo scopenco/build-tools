@@ -56,8 +56,10 @@ or where you need. You should edit scripts and set python modules directory.
 Running 
 -------
 
-you can run sync.sh or you build script with args:
-> ./sync.sh 
+you can run build.sh or you build script with args:
+> ./build.sh
+
+Detailed example in wiki.
 
 Questions?
 ----------
