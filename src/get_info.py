@@ -46,7 +46,7 @@ def main():
     options = parse_args()
     cli.setup_logging("project", options.debug)
 
-   # check os compat
+    # check os compat
     if not cli.check_os_version:                                                                                                                                                               
         logging.critical('OS not supported. Please install build-tools on CentOS 5.')
         sys.exit(1)
@@ -70,14 +70,14 @@ def main():
     cli.get_xml_tags(options.config, options.xmldir, projects, packages, roles, repositories)
 
     if options.attribute:
-    	if options.attribute in projects[0].keys():
-	    print projects[0][options.attribute]
-	else:
-	    logging.critical('attribute %s not found' % options.attribute)
-	    sys.exit(1)
+        if options.attribute in projects[0].keys():
+            print projects[0][options.attribute]
+        else:
+            logging.critical('attribute %s not found' % options.attribute)
+            sys.exit(1)
     else:
         logging.critical('attribute is not defined')
-	sys.exit(1)
+        sys.exit(1)
 #end def main
 
 if __name__ == '__main__':

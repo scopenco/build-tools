@@ -55,11 +55,11 @@ def main():
     options = parse_args()
     cli.setup_logging("constructor", options.debug)
 
-   # check os compat
-    if not cli.check_os_version:
+    # check os compat
+    if not cli.check_os_version():
         logging.critical('OS not supported. Please install build-tools on CentOS 5.')
         sys.exit(1)
-    	
+
     # check mandatory options
     if not options.config:
         logging.critical('project xml is required.')
@@ -203,7 +203,7 @@ def main():
             package_list = track.pkgSack.returnPackages()
 
         exactmatch, matched, unmatched = yum.packages.parsePackages(package_list, [pa])
-	logging.debug("exactmatch %s" % ' '.join([str(s) for s in exactmatch]))
+        logging.debug("exactmatch %s" % ' '.join([str(s) for s in exactmatch]))
         if unmatched:
             logging.critical("package %s not found" % pa)
             sys.exit(1)
@@ -238,7 +238,7 @@ def main():
 
     while cli.more_to_check(track.unprocessed):
         for pkgtup in track.unprocessed.keys():
-	    # if always processed then continue from next package
+            # if always processed then continue from next package
             if track.unprocessed[pkgtup] is None:
                 continue
 
@@ -246,7 +246,7 @@ def main():
             final_pkgs[po.pkgtup] = po
 
             deps_list = track.findDeps(po)
-	    # deps found, set None for while loop
+            # deps found, set None for while loop
             track.unprocessed[po.pkgtup] = None
 
             for dep in deps_list:

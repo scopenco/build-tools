@@ -27,9 +27,9 @@ def parse_args():
                     action="callback", callback=cli.check_before_store,
                     help="set project xml file")
     geng.add_option("-x", "--xml_path", dest='xmldir',
-		    default=os.getcwd(), help="Path to xml roles directory")
+                    default=os.getcwd(), help="Path to xml roles directory")
     geng.add_option("-s", "--spec_template", dest='spec_template',
-		    help="set spec template file")
+                    help="set spec template file")
     parser.add_option_group(geng)
 
     misc = optparse.OptionGroup(parser, "Miscellaneous Options")
@@ -45,7 +45,7 @@ def main():
     options = parse_args()
     cli.setup_logging("project", options.debug)
 
-   # check os compat
+    # check os compat
     if not cli.check_os_version:                                                                                                                                                               
         logging.critical('OS not supported. Please install build-tools on CentOS 5.')
         sys.exit(1)
@@ -80,21 +80,21 @@ def main():
     # get package version and release
     projects[0]['requires_packages'] = ''
     for p in packages:
-	# append name
-	pa = p[0]
-	# append version and release
-	if p[1]:
-	    projects[0]['requires_packages'] = projects[0]['requires_packages'] + 'Requires: %s >= %s\n' % (pa, p[1])
-	else:
-	    projects[0]['requires_packages'] = projects[0]['requires_packages'] + 'Requires: %s\n' % pa
+        # append name
+        pa = p[0]
+        # append version and release
+        if p[1]:
+            projects[0]['requires_packages'] = projects[0]['requires_packages'] + 'Requires: %s >= %s\n' % (pa, p[1])
+        else:
+            projects[0]['requires_packages'] = projects[0]['requires_packages'] + 'Requires: %s\n' % pa
 
     F = open('%s' % options.spec_template)
     TEMPLATE = F.read()
     try:
-	print TEMPLATE % projects[0]
+        print TEMPLATE % projects[0]
     except KeyError, e:
-	logging.critical('attr %s not found in project attributes' % e)
-	sys.exit(1)
+        logging.critical('attr %s not found in project attributes' % e)
+        sys.exit(1)
 
 #end def main
 

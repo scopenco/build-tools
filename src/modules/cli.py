@@ -185,10 +185,8 @@ def check_os_version():
     '''Check OS platform'''
 
     os_vars = platform.dist()
-    if 'centos' != os_vars[0]:
-	return 1
-    if  '5' != os_vars[1].split('.')[0]:
-	return 1
+    if 'centos' != os_vars[0] and '5' != os_vars[1].split('.')[0]:
+        return 1
 
     return 0
 # end def check_os_version
