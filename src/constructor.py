@@ -50,9 +50,16 @@ def parse_args():
 #end def parse_args
 
 def main():
+
+
     options = parse_args()
     cli.setup_logging("constructor", options.debug)
 
+   # check os compat
+    if not cli.check_os_version:
+        logging.critical('OS not supported. Please install build-tools on CentOS 5.')
+        sys.exit(1)
+    	
     # check mandatory options
     if not options.config:
         logging.critical('project xml is required.')

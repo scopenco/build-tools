@@ -1,7 +1,9 @@
 #!/usr/bin/env python
-# (c) 2009 Andrey V. Scopenco andrey@scopenco.net
-# $Id$
-# base module with small and usable defs
+# -*- coding: UTF-8 -*-
+'''
+This module is a set of funcs and classes with cli destination
+Andrey Skopenko @ 2010
+'''
 
 import sys
 import os
@@ -10,20 +12,19 @@ import logging
 import logging.handlers
 import xml.sax
 import xmlparser
+import platform
 
 def check_before_store(option, opt_str, value, parser):
-    """
-    callback to store args from cmd
-    """
+    '''callback to store args from cmd'''
+
     if len(value) == 0:
         raise OptionValueError, "%s option requires an argument" % opt_str
     setattr(parser.values, option.dest, value)
 #end def check_before_store
 
 def check_before_append(option, opt_str, value, parser):
-    """
-    callback to append args from cmd
-    """
+    '''callback to append args from cmd'''
+
     if len(value) == 0:
         raise OptionValueError, "%s option requires an argument" % opt_str
     parser.values.ensure_value(option.dest, []).append(value)
@@ -48,10 +49,9 @@ class EncodedOptionParser(optparse.OptionParser):
 #end class _get_encoding
 
 class HelpFormatter(optparse.IndentedHelpFormatter):
-    """
-    Subclass the default help formatter to allow printing newline characters
-    in --help output. The way we do this is a huge hack :(
-    """
+    '''Subclass the default help formatter to allow printing newline characters
+    in --help output. The way we do this is a huge hack :('''
+
     oldwrap = None
 
     def format_option(self, option):
@@ -74,7 +74,7 @@ class HelpFormatter(optparse.IndentedHelpFormatter):
 #end class HelpFormatter
 
 def setup_logging(appname, debug=False):
-    """ set up logging """     
+    '''configure logging'''
 
     log_dir = os.path.expanduser("~/.constructor")
     if not os.access(log_dir,os.W_OK):
@@ -108,7 +108,7 @@ def setup_logging(appname, debug=False):
 #end def setup_logging
 
 def get_xml_tags(config, path, projects, packages, roles, repositories):
-    """ parse project xml files and create packages, role, repositories lists """
+    '''parse project xml files and create packages, role, repositories lists'''
 
     # check role exist
     if not os.path.isfile("%s/%s" % (path, config)):
@@ -171,7 +171,8 @@ def more_to_check(unprocessed_pkgs):
 
 # for yum 2.4.X compat
 def sortPkgObj(pkg1 ,pkg2):
-    """sorts a list of yum package objects by name"""
+    '''sort a list of yum package objects by name'''
+
     if pkg1.name > pkg2.name:
         return 1
     elif pkg1.name == pkg2.name:
@@ -180,3 +181,17 @@ def sortPkgObj(pkg1 ,pkg2):
         return -1
 #end def sortPkgObj
 
+def check_os_version():
+    '''Check OS platform'''
+
+    os_vars = platform.dist()
+    if 'centos' != os_vars[0]:
+	return 1
+    if  '5' != os_vars[1].split('.')[0]:
+	return 1
+
+    return 0
+# end def check_os_version
+
+if __name__ == "__main__":
+     print __doc__
