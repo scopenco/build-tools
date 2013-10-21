@@ -47,7 +47,7 @@ def main():
     cli.setup_logging("project", options.debug)
 
     # check os compat
-    if not cli.check_os_version:                                                                                                                                                               
+    if cli.check_os_version:                                                                                                                                                               
         logging.critical('OS not supported. Please install build-tools on CentOS 5.')
         sys.exit(1)
 
