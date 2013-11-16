@@ -73,40 +73,6 @@ class HelpFormatter(optparse.IndentedHelpFormatter):
     #end def _textwrap_wrapper
 #end class HelpFormatter
 
-def setup_logging(appname, debug=False):
-    '''configure logging'''
-
-    log_dir = os.path.expanduser("~/.constructor")
-    if not os.access(log_dir,os.W_OK):
-        try:
-            os.makedirs(log_dir)
-        except IOError, e:
-            raise RuntimeError, "Could not create %d directory: " % log_dir, e
-
-    dateFormat = "%d %b %Y %H:%M:%S"
-    streamdateFormat = "%H:%M:%S"
-    fileFormat = "[%(asctime)s " + appname + " %(process)d] %(levelname)s (%(module)s:%(lineno)d) %(message)s"
-    streamDebugFormat = "%(asctime)s %(levelname)-8s %(message)s"
-    streamFormat = "%(asctime)s %(levelname)-8s %(message)s"
-    filename = os.path.join(log_dir, appname + ".log")
-
-    rootLogger = logging.getLogger()
-    rootLogger.setLevel(logging.DEBUG)
-    fileHandler = logging.handlers.RotatingFileHandler(filename, "a", maxBytes=1024*1024, backupCount=5)
-
-    fileHandler.setFormatter(logging.Formatter(fileFormat, dateFormat))
-    rootLogger.addHandler(fileHandler)
-
-    streamHandler = logging.StreamHandler(sys.stdout)
-    if debug:
-        streamHandler.setLevel(logging.DEBUG)
-        streamHandler.setFormatter(logging.Formatter(streamDebugFormat, streamdateFormat))
-    else:
-        streamHandler.setLevel(logging.INFO)
-        streamHandler.setFormatter(logging.Formatter(streamFormat, streamdateFormat))
-    rootLogger.addHandler(streamHandler)
-#end def setup_logging
-
 def get_xml_tags(config, path, projects, packages, roles, repositories):
     '''parse project xml files and create packages, role, repositories lists'''
 

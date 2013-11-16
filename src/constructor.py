@@ -52,7 +52,14 @@ def parse_args():
 def main():
 
     options = parse_args()
-    cli.setup_logging("constructor", options.debug)
+
+    # setup logging
+    if options.debug:
+	LEVEL = logging.DEBUG
+    else:
+	LEVEL = logging.INFO
+    logging.basicConfig(format='%(asctime)s: %(message)s', level=LEVEL)
+    logging.info('running...')
 
     # check os compat
     if cli.check_os_version():
