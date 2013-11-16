@@ -10,7 +10,7 @@ import logging
 import rpmUtils.arch
 import yum
 from urlparse import urljoin
-import shutil
+from shutil import copy2
 
 sys.path.insert(0, 'modules')
 
@@ -50,7 +50,6 @@ def parse_args():
 #end def parse_args
 
 def main():
-
 
     options = parse_args()
     cli.setup_logging("constructor", options.debug)
@@ -103,12 +102,11 @@ def main():
     track = tracker.tracker()
 
     # init yum configuration
-    track.doConfigSetup(debuglevel=0,init_plugins=False) # init yum, without plugins
+    track.doConfigSetup(debuglevel=0, init_plugins=False) # init yum, without plugins
 
     # get list of arch
     if options.arch:
-        archlist = []
-        archlist.extend(rpmUtils.arch.getArchList(options.arch))
+        archlist = rpmUtils.arch.getArchList(options.arch)
     else:
         archlist = rpmUtils.arch.getArchList()
     logging.debug("archlist %s" % archlist)
@@ -159,7 +157,6 @@ def main():
     # setup repos
     try:
         track.doRepoSetup()
-
     except yum.Errors.RepoError, e:
         logging.critical("could not setup repositories: %s" % (e))
         sys.exit(1)
@@ -288,10 +285,14 @@ def main():
         repo.cache = 0
         logging.info('Downloading %s (%s) (%s/%s)' % (os.path.basename(remote), repo, i, maxi))
         pkg.localpath = local # Hack: to set the localpath to what we want.
-        path = repo.getPackage(pkg)
+	try:
+	    path = repo.getPackage(pkg)
+	except yum.Errors.NoMoreMirrorsRepoError:
+	    logging.critical("No more mirrors, exit.")
+	    sys.exit(1)
 
         if not os.path.exists(local) or not os.path.samefile(path, local):
-            shutil.copy2(path, local)
+            copy2(path, local)
 #end del main
 
 if __name__ == '__main__':
