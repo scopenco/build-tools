@@ -48,7 +48,7 @@ class tracker(yum.YumBase):
         return None
     #end def provide_pkg
 
-    def findDeps(self, pkg):
+    def findDeps(self, pkg, options):
         """ find dependences for pkgs"""
 
         unresolved = []
@@ -76,7 +76,8 @@ class tracker(yum.YumBase):
             if dep not in unresolved:
 #	        logging.info("dep %s" % str(dep))
                 if dep.pkgtup not in self.unprocessed.keys():
-                    logging.info("adding %s for %s, required by %s" % (dep, req[0], pkg))
+		    if not options.urls:	
+			logging.info("adding %s for %s, required by %s" % (dep, req[0], pkg))
                     unresolved.append(dep)
                 else:
                     logging.debug("always processed %s for %s, required by %s" % (dep, req[0], pkg))

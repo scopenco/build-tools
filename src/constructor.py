@@ -5,7 +5,7 @@
 
 import os
 import sys
-import optparse
+from optparse import OptionParser
 import logging
 import rpmUtils.arch
 import yum
@@ -17,41 +17,27 @@ sys.path.insert(0, 'modules')
 import cli
 import tracker 
 
-def parse_args():
-    """ Parse command args """
-
-    usage = "%prog --config CONFIG [options]"
-    version = "%prog 1.0"
-    parser = cli.EncodedOptionParser(usage=usage, version=version,
-                                    formatter=cli.HelpFormatter())
-
-    geng = optparse.OptionGroup(parser, "General Options")
-    geng.add_option("-c", "--config", type="string", dest="config",
-                    action="callback", callback=cli.check_before_store,
-                    help="Project xml file")
-    geng.add_option("-p", "--download_path", type="string", dest='destdir',
-        default=os.getcwd(), help="Path to download directory")
-    geng.add_option("-x", "--xml_path", type="string", dest='xmldir',
-        default=os.getcwd(), help="Path to xml roles directory")
-    geng.add_option("-a", "--arch", type="string", default=None,
-        action="callback", callback=cli.check_before_store,
-        help='Check as if running the specified arch (default: current arch)')
-    geng.add_option("-u", "--urls", default=False, action="store_true", 
-        help="Just list urls of what would be downloaded, don't download")
-    parser.add_option_group(geng)
-
-    misc = optparse.OptionGroup(parser, "Miscellaneous Options")
-    misc.add_option("-d", "--debug", action="store_true", dest="debug",
-                    help="Print debugging information")
-    parser.add_option_group(misc)
-
-    (options, dummy) = parser.parse_args()
-    return options
-#end def parse_args
-
 def main():
 
-    options = parse_args()
+    p = OptionParser(description='script downloads packages from public repos  based on xml specs',
+                    prog='constructor.py',
+                    usage="%prog -c CONFIG [-x PROJECT_PATH] [-p DOWNLOAD_PATH]")
+
+    p.add_option("-c", "--config", type="string", dest="config",
+                    action="callback", callback=cli.check_before_store,
+                    help="Project xml file")
+    p.add_option("-p", "--download_path", type="string", dest='destdir',
+        default=os.getcwd(), help="Path to download directory")
+    p.add_option("-x", "--xml_path", type="string", dest='xmldir',
+        default=os.getcwd(), help="Path to xml roles directory")
+    p.add_option("-a", "--arch", type="string", default=None,
+        action="callback", callback=cli.check_before_store,
+        help='Check as if running the specified arch (default: current arch)')
+    p.add_option("-u", "--urls", default=False, action="store_true", 
+        help="Just list urls of what would be downloaded, don't download")
+    p.add_option("-d", "--debug", action="store_true", dest="debug",
+                    help="Print debugging information")
+    options, arguments = p.parse_args()
 
     # setup logging
     if options.debug:
@@ -59,7 +45,6 @@ def main():
     else:
 	LEVEL = logging.INFO
     logging.basicConfig(format='%(asctime)s: %(message)s', level=LEVEL)
-    logging.info('running...')
 
     # check os compat
     if cli.check_os_version():
@@ -249,7 +234,7 @@ def main():
             po = track.unprocessed[pkgtup]
             final_pkgs[po.pkgtup] = po
 
-            deps_list = track.findDeps(po)
+            deps_list = track.findDeps(po, options)
             # deps found, set None for while loop
             track.unprocessed[po.pkgtup] = None
 
