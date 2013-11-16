@@ -69,16 +69,16 @@ class Tracker(yum.YumBase):
             if dep is None:
                 # find best pkg for dep
                 dep = self.provide_pkg(req)
-		if dep is None:
-		# if cant find dep do error
-		    logging.critical('unresolvable dependency %s in %s'	% (req[0], pkg))
-		    sys.exit(1)
+                if dep is None:
+                # if cant find dep do error
+                    logging.critical('unresolvable dependency %s in %s'	% (req[0], pkg))
+                    sys.exit(1)
 
             if dep not in unresolved:
-	        # logging.info('dep %s' % str(dep))
+                # logging.info('dep %s' % str(dep))
                 if dep.pkgtup not in self.unprocessed.keys():
-		    if not options.urls:	
-			logging.info('adding %s for %s, required by %s' % (dep, req[0], pkg))
+                    if not options.urls:
+                        logging.info('adding %s for %s, required by %s' % (dep, req[0], pkg))
                     unresolved.append(dep)
                 else:
                     logging.debug('always processed %s for %s, required by %s' % (dep, req[0], pkg))

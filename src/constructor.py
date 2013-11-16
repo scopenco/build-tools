@@ -42,9 +42,9 @@ def main():
 
     # setup logging
     if options.debug:
-	LEVEL = logging.DEBUG
+        LEVEL = logging.DEBUG
     else:
-	LEVEL = logging.INFO
+        LEVEL = logging.INFO
     logging.basicConfig(format='%(asctime)s: %(message)s', level=LEVEL)
 
     # check os compat
@@ -277,11 +277,11 @@ def main():
         repo.cache = 0
         logging.info('Downloading %s (%s) (%s/%s)' % (os.path.basename(remote), repo, i, maxi))
         pkg.localpath = local # Hack: to set the localpath to what we want.
-	try:
-	    path = repo.getPackage(pkg)
-	except yum.Errors.NoMoreMirrorsRepoError:
-	    logging.critical("No more mirrors, exit.")
-	    sys.exit(1)
+        try:
+            path = repo.getPackage(pkg)
+        except yum.Errors.NoMoreMirrorsRepoError:
+            logging.critical("No more mirrors, exit.")
+            sys.exit(1)
 
         if not os.path.exists(local) or not os.path.samefile(path, local):
             copy2(path, local)
