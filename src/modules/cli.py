@@ -7,9 +7,7 @@ Andrey Skopenko @ 2010
 
 import sys
 import os
-import optparse
 import logging
-import logging.handlers
 import xml.sax
 import xmlparser
 import platform
@@ -29,49 +27,6 @@ def check_before_append(option, opt_str, value, parser):
         raise OptionValueError, "%s option requires an argument" % opt_str
     parser.values.ensure_value(option.dest, []).append(value)
 #end class check_before_append
-
-class EncodedOptionParser(optparse.OptionParser):
-    '''Subclass to get print_help to work properly with non-ascii text'''
-
-    def _get_encoding(self, f):
-        encoding = getattr(f, "encoding", None)
-        if not encoding:
-            (dummy, encoding) = locale.getlocale()
-        return encoding
-    #end def _get_encoding
-
-    def print_help(self, file=None):
-        if file is None:
-            file = sys.stdout
-        encoding = self._get_encoding(file)
-        file.write(self.format_help().encode(encoding, "replace"))
-    #end def print_help
-#end class _get_encoding
-
-class HelpFormatter(optparse.IndentedHelpFormatter):
-    '''Subclass the default help formatter to allow printing newline characters
-    in --help output. The way we do this is a huge hack :('''
-
-    oldwrap = None
-
-    def format_option(self, option):
-        self.oldwrap = optparse.textwrap.wrap
-        ret = []
-        try:
-            optparse.textwrap.wrap = self._textwrap_wrapper
-            ret = optparse.IndentedHelpFormatter.format_option(self, option)
-        finally:
-            optparse.textwrap.wrap = self.oldwrap
-        return ret
-    #dev end format_option
-
-    def _textwrap_wrapper(self, text, width):
-        ret = []
-        for line in text.split("\n"):
-            ret.extend(self.oldwrap(line, width))
-        return ret
-    #end def _textwrap_wrapper
-#end class HelpFormatter
 
 def get_xml_tags(config, path, projects, packages, roles, repositories):
     '''parse project xml files and create packages, role, repositories lists'''

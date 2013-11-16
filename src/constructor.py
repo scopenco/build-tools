@@ -15,10 +15,11 @@ from shutil import copy2
 sys.path.insert(0, 'modules')
 
 import cli
-import tracker 
+from tracker import Tracker 
 
 def main():
 
+    # get options
     p = OptionParser(description='script downloads packages from public repos  based on xml specs',
                     prog='constructor.py',
                     usage="%prog -c CONFIG [-x PROJECT_PATH] [-p DOWNLOAD_PATH]")
@@ -62,16 +63,15 @@ def main():
         logging.critical('%s/%s does not exit.' % (options.xmldir, options.config))
         sys.exit(1)
 
-
     logging.debug(options)
+
+    if not options.urls:
+        logging.info('project %s' % options.config)
 
     project         = []      # project desc
     packages        = []      # list of packages
     roles           = []      # list of roles
     repositories    = []      # list of repos
-
-    if not options.urls:
-        logging.info('project %s' % options.config)
 
     # get xml data
     cli.get_xml_tags(options.config, options.xmldir, project, packages, roles, repositories)
@@ -91,7 +91,7 @@ def main():
         logging.critical("cannot write to  destination dir %s" % options.destdir)
         sys.exit(1)
 
-    track = tracker.tracker()
+    track = Tracker()
 
     # init yum configuration
     track.doConfigSetup(debuglevel=0, init_plugins=False) # init yum, without plugins

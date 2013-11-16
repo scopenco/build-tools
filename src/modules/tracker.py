@@ -1,15 +1,16 @@
 #!/usr/bin/env python
 # (c) 2009 Andrey V. Scopenco andrey@scopenco.net
-# $Id$
-# yum tracking module
-# used in search deps process
+'''
+yum tracking module
+used in search deps process
+'''
 
 import yum
 import logging
 import sys
 
-class tracker(yum.YumBase):
-    """ class used to check dependences"""
+class Tracker(yum.YumBase):
+    '''class for checking dependences'''
 
     def __init__(self):
         yum.YumBase.__init__(self)
@@ -19,7 +20,7 @@ class tracker(yum.YumBase):
     #end def __init__
 
     def provide_pkg(self, req):
-        """ find the best pkg for dependence"""
+        '''find the best pkg for dependence'''
 
         best = None
         (r, f, v) = req
@@ -49,7 +50,7 @@ class tracker(yum.YumBase):
     #end def provide_pkg
 
     def findDeps(self, pkg, options):
-        """ find dependences for pkgs"""
+        ''' find dependences for pkgs'''
 
         unresolved = []
 
@@ -70,17 +71,20 @@ class tracker(yum.YumBase):
                 dep = self.provide_pkg(req)
 		if dep is None:
 		# if cant find dep do error
-		    logging.critical("unresolvable dependency %s in %s"	% (req[0], pkg))
+		    logging.critical('unresolvable dependency %s in %s'	% (req[0], pkg))
 		    sys.exit(1)
 
             if dep not in unresolved:
-#	        logging.info("dep %s" % str(dep))
+	        # logging.info('dep %s' % str(dep))
                 if dep.pkgtup not in self.unprocessed.keys():
 		    if not options.urls:	
-			logging.info("adding %s for %s, required by %s" % (dep, req[0], pkg))
+			logging.info('adding %s for %s, required by %s' % (dep, req[0], pkg))
                     unresolved.append(dep)
                 else:
-                    logging.debug("always processed %s for %s, required by %s" % (dep, req[0], pkg))
+                    logging.debug('always processed %s for %s, required by %s' % (dep, req[0], pkg))
 
         return unresolved
     #end def findDeps
+
+if __name__ == "__main__":
+    print __doc__ 
