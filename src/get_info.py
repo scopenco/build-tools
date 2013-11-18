@@ -6,7 +6,7 @@
 
 import os
 import sys
-import optparse
+from optparse import OptionParser
 import logging
 import xml.sax
 
@@ -15,39 +15,31 @@ sys.path.insert(0, 'modules')
 import cli
 import xmlparser
 
-def parse_args():
-    """ Parse command args """
-
-    usage = "%prog --config CONFIG [options]"
-    version = "%prog 1.0"
-    parser = cli.EncodedOptionParser(usage=usage, version=version,
-                                    formatter=cli.HelpFormatter())
-
-    geng = optparse.OptionGroup(parser, "General Options")
-    geng.add_option("-c", "--config", type="string", dest="config",
-                    action="callback", callback=cli.check_before_store,
-                    help="project xml file")
-    geng.add_option("-x", "--xml_path", dest='xmldir',
-        default=os.getcwd(), help="Path to xml roles directory")
-    geng.add_option("-a", "--attribute", dest='attribute',
-        help="show project attribute")
-    parser.add_option_group(geng)
-
-    misc = optparse.OptionGroup(parser, "Miscellaneous Options")
-    misc.add_option("-d", "--debug", action="store_true", dest="debug",
-                    help="Print debugging information")
-    parser.add_option_group(misc)
-
-    (options, dummy) = parser.parse_args()
-    return options
-#end def parse_args
-
 def main():
-    options = parse_args()
-    cli.setup_logging("project", options.debug)
+    # get options
+    p = OptionParser(description='get info about selected project',
+                    prog='get_info.py',
+                    usage='%prog --config CONFIG [options]')
+    p.add_option("-c", "--config", type="string", dest="config",
+                    action="callback", callback=cli.check_before_store,
+                    help="Project xml file")
+    p.add_option("-x", "--xml_path", type="string", dest='xmldir',
+        default=os.getcwd(), help="Path to xml roles directory")
+    p.add_option("-a", "--attribute", dest='attribute',
+        help="show project attribute")
+    p.add_option("-d", "--debug", action="store_true", dest="debug",
+                    help="Print debugging information")
+    options, arguments = p.parse_args()
+
+    # setup logging
+    if options.debug:
+        LEVEL = logging.DEBUG
+    else:
+        LEVEL = logging.INFO
+    logging.basicConfig(format='%(asctime)s: %(message)s', level=LEVEL)
 
     # check os compat
-    if cli.check_os_version:                                                                                                                                                               
+    if cli.check_os_version():
         logging.critical('OS not supported. Please install build-tools on CentOS 5.')
         sys.exit(1)
 
