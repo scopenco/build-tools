@@ -1,7 +1,10 @@
-#!/bin/sh  -x
+#!/bin/sh
 # scripts is usefull for beginners that would like
 # to understand how constructor works
 #
+
+set -e
+set -x
 
 # local tmp directory where rpm packages will download to
 TMPDIR="repo" 
@@ -51,5 +54,5 @@ wget http://mirror.yandex.ru/centos/5/os/x86_64/images/stage2.img -O $TMPDIR/ima
 
 # get comps.xml need for anaconda installer and create yum rrepository 
 wget http://mirror.yandex.ru/centos/5/os/x86_64/repodata/comps.xml -O $TMPDIR/comps.xml
-createrepo -g $TMPDIR/comps.xml -d $TMPDIR
+createrepo -g $(pwd)/$TMPDIR/comps.xml -d $TMPDIR
 rm -f $TMPDIR/comps.xml
