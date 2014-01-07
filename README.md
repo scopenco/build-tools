@@ -9,7 +9,7 @@ and on wiki.
 
 Purpose
 -------
-This utility allow to construct Yum repository with metapackage from any of public/private repositories on the base of xml specifications (roles). Roles describe a set of required packages and repositories from which these packages with dependencies should be downloaded into a local repository. Attributes in xml roles allow to differentiate and versioning service environment.
+This utility allow to construct Yum repository with metapackage from any of public/private repositories on the base of xml specifications (roles). Roles describe a set of required packages and repositories from which these packages with dependencies should be downloaded into a local repository. Attributes in xml roles allow to differentiate and versioning service environment in DevOps.
 
 Support OS:
 --------
