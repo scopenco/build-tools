@@ -7,13 +7,13 @@
         version="0.1"
         >
 
-  <role path="roles/minimal.xml" />
+  <role path="roles/centos-5-minimal.xml" />
 
   <package name="httpd" />
   <package name="php-mysql" />
   <package name="mysql-server" />
 
-  <role path="repos/centos-base.xml" />
-  <role path="repos/centos-updates.xml" />
+  <role path="repos/centos-5-base.xml" />
+  <role path="repos/centos-5-updates.xml" />
 
 </project>
