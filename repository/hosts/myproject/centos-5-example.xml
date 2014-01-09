@@ -9,11 +9,15 @@
 
   <role path="roles/centos-5-minimal.xml" />
 
-  <package name="httpd" />
-  <package name="php-mysql" />
+  <!-- python packages -->
+  <package name="python" />
+  <package name="python-IPy" />
+  <package name="python-simplejson" />
+
+  <!-- mysql packages -->
   <package name="mysql-server" />
 
   <role path="repos/centos-5-base.xml" />
   <role path="repos/centos-5-updates.xml" />
-
+  <role path="repos/centos-5-epel.xml" />
 </project>
