@@ -11,7 +11,7 @@ TMPDIR="repo"
 # path to repository 
 XML_DIR="repository"
 # path to project xml
-PROJECT="hosts/myproject/config.xml"
+PROJECT="hosts/myproject/centos-5-example.xml"
 # uri of repo where to search yum repository after creation in production
 PROJECT_REPO="http://repo.domain.con/repo"
 
