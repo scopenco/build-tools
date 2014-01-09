@@ -7,7 +7,7 @@ set -e
 set -x
 
 # local tmp directory where rpm packages will download to
-TMPDIR="repo" 
+TMPDIR="repo-el6" 
 # path to repository 
 XML_DIR="repository"
 # path to project xml
