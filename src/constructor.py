@@ -15,29 +15,34 @@ from shutil import copy2
 sys.path.insert(0, 'modules')
 
 import cli
-from tracker import Tracker 
+from tracker import Tracker
+
 
 def main():
-
     # get options
-    p = OptionParser(description='script downloads packages from public repos  based on xml specs',
-                    prog='constructor.py',
-                    usage="%prog -c CONFIG [-x PROJECT_PATH] [-p DOWNLOAD_PATH]")
+    p = OptionParser(
+        description='script downloads packages from '
+                    'public repos based on xml specs',
+        prog='constructor.py',
+        usage="%prog -c CONFIG [-x PROJECT_PATH] [-p DOWNLOAD_PATH]"
+    )
 
     p.add_option("-c", "--config", type="string", dest="config",
-                    action="callback", callback=cli.check_before_store,
-                    help="Project xml file")
+                 action="callback", callback=cli.check_before_store,
+                 help="Project xml file")
     p.add_option("-p", "--download_path", type="string", dest='destdir',
-        default=os.getcwd(), help="Path to download directory")
+                 default=os.getcwd(), help="Path to download directory")
     p.add_option("-x", "--xml_path", type="string", dest='xmldir',
-        default=os.getcwd(), help="Path to xml roles directory")
+                 default=os.getcwd(), help="Path to xml roles directory")
     p.add_option("-a", "--arch", type="string", default=None,
-        action="callback", callback=cli.check_before_store,
-        help='Check as if running the specified arch (default: current arch)')
-    p.add_option("-u", "--urls", default=False, action="store_true", 
-        help="Just list urls of what would be downloaded, don't download")
+                 action="callback", callback=cli.check_before_store,
+                 help='Check as if running the specified'
+                      'arch (default: current arch)')
+    p.add_option("-u", "--urls", default=False, action="store_true",
+                 help="Just list urls of what"
+                      "would be downloaded, don't download")
     p.add_option("-d", "--debug", action="store_true", dest="debug",
-                    help="Print debugging information")
+                 help="Print debugging information")
     options, arguments = p.parse_args()
 
     # setup logging
@@ -49,7 +54,9 @@ def main():
 
     # check os compat
     if cli.check_os_version():
-        logging.critical('OS not supported. Please install build-tools on CentOS 5.')
+        logging.critical(
+            'OS not supported. Please install build-tools on CentOS 5.'
+        )
         sys.exit(1)
 
     # check mandatory options
@@ -60,7 +67,9 @@ def main():
         logging.critical('%s does not exit.' % options.xmldir)
         sys.exit(1)
     if not os.path.isfile("%s/%s" % (options.xmldir, options.config)):
-        logging.critical('%s/%s does not exit.' % (options.xmldir, options.config))
+        logging.critical(
+            '%s/%s does not exit.' % (options.xmldir, options.config)
+        )
         sys.exit(1)
 
     logging.debug(options)
@@ -68,33 +77,46 @@ def main():
     if not options.urls:
         logging.info('project %s' % options.config)
 
-    project         = []      # project desc
-    packages        = []      # list of packages
-    roles           = []      # list of roles
-    repositories    = []      # list of repos
+    project = []           # project desc
+    packages = []          # list of packages
+    roles = []             # list of roles
+    repositories = []      # list of repos
 
     # get xml data
-    cli.get_xml_tags(options.config, options.xmldir, project, packages, roles, repositories)
+    cli.get_xml_tags(
+        options.config,
+        options.xmldir,
+        project,
+        packages,
+        roles,
+        repositories
+    )
 
     if not options.urls:
-        logging.info('create destination download directory %s' % options.destdir)
+        logging.info(
+            'create destination download directory %s' % options.destdir
+        )
 
-    # create destination download dir 
+    # create destination download dir
     if not os.path.exists(options.destdir) and not options.urls:
         try:
             os.makedirs(options.destdir)
         except OSError, e:
-            logging.critical("cannot create destination dir %s" % options.destdir)
+            logging.critical(
+                "cannot create destination dir %s" % options.destdir)
             sys.exit(1)
 
     if not os.access(options.destdir, os.W_OK) and not options.urls:
-        logging.critical("cannot write to  destination dir %s" % options.destdir)
+        logging.critical(
+            "cannot write to  destination dir %s" % options.destdir
+        )
         sys.exit(1)
 
     track = Tracker()
 
     # init yum configuration
-    track.doConfigSetup(debuglevel=0, init_plugins=False) # init yum, without plugins
+    # init yum, without plugins
+    track.doConfigSetup(debuglevel=0, init_plugins=False)
 
     # get list of arch
     if options.arch:
@@ -138,9 +160,11 @@ def main():
             track.repos.add(newrepo)
             track.repos.enableRepo(newrepo.id)
             if not options.urls:
-                logging.info("repository %s, %s" % (repoid,repopath))
+                logging.info("repository %s, %s" % (repoid, repopath))
             else:
-                logging.debug("enable project repository %s, %s" % (repoid,repopath))
+                logging.debug(
+                    "enable project repository %s, %s" % (repoid, repopath)
+                )
 
     except yum.Errors.DuplicateRepoError, e:
         logging.critical(e)
@@ -166,7 +190,7 @@ def main():
     # need for checking repos in package attrs
     for repoid in track.repos.listEnabled():
         repoid_list.append(repoid.id)
- 
+
     logging.debug("enabled repos %s" % repoid_list)
 
     # get package downloads
@@ -178,20 +202,26 @@ def main():
             pa = "%s-%s" % (pa, p[1])
             if p[2]:
                 pa = "%s-%s" % (pa, p[2])
-        
+
         # check package repo in project repos
         repoid = p[3]
 
         if repoid:
             if repoid not in repoid_list:
-                logging.critical("could not find repository %s for package %s" % (repoid, pa))
+                logging.critical(
+                    "could not find repository %s for package %s" %
+                    (repoid, pa)
+                )
                 sys.exit(1)
 
             package_list = track.pkgSack.returnPackages(repoid=repoid)
         else:
             package_list = track.pkgSack.returnPackages()
 
-        exactmatch, matched, unmatched = yum.packages.parsePackages(package_list, [pa])
+        exactmatch, matched, unmatched = yum.packages.parsePackages(
+            package_list,
+            [pa]
+        )
         logging.debug("exactmatch %s" % ' '.join([str(s) for s in exactmatch]))
         if unmatched:
             logging.critical("package %s not found" % pa)
@@ -199,19 +229,28 @@ def main():
 
         exactmatch = track.bestPackagesFromList(exactmatch)
         if len(exactmatch) == 2:
-            if exactmatch[0].pkgtup[0].endswith('-devel') and exactmatch[1].pkgtup[0].endswith('-devel'):
-                exactmatch = exactmatch[0:1]
+            if exactmatch[0].pkgtup[0].endswith('-devel'):
+                if exactmatch[1].pkgtup[0].endswith('-devel'):
+                    exactmatch = exactmatch[0:1]
 
         if not options.urls:
             if repoid:
-                logging.info("found package(s) %s in repository %s" % (' '.join([str(n) for n in exactmatch]), repoid))
+                logging.info(
+                    "found package(s) %s in repository %s" %
+                    (' '.join([str(n) for n in exactmatch]), repoid))
             else:
-                logging.info("found package(s) %s" % ' '.join([str(n) for n in exactmatch]))
+                logging.info(
+                    "found package(s) %s" %
+                    ' '.join([str(n) for n in exactmatch]))
         else:
             if repoid:
-                logging.debug("found package(s) %s in repository %s" % (' '.join([str(n) for n in exactmatch]), repoid))
+                logging.debug(
+                    "found package(s) %s in repository %s" %
+                    (' '.join([str(n) for n in exactmatch]), repoid))
             else:
-                logging.debug("found package(s) %s" % ' '.join([str(n) for n in exactmatch]))
+                logging.debug(
+                    "found package(s) %s" %
+                    ' '.join([str(n) for n in exactmatch]))
 
         pkg_list.extend(exactmatch)
         pkg_list.extend(matched)
@@ -239,7 +278,7 @@ def main():
             track.unprocessed[po.pkgtup] = None
 
             for dep in deps_list:
-                if not track.unprocessed.has_key(dep.pkgtup):
+                if dep.pkgtup not in track.unprocessed:
                     track.unprocessed[dep.pkgtup] = dep
 
     # get final list with newest versions
@@ -263,11 +302,14 @@ def main():
         local = os.path.basename(remote)
         local = os.path.join(options.destdir, local)
         logging.debug("local: %s" % local)
-        if (os.path.exists(local) and os.path.getsize(local) == int(pkg.returnSimple('packagesize'))):
-            logging.info("%s (%s/%s) already exists and appears to be complete" % (local, i, maxi))
-            continue
+        if os.path.exists(local):
+            if os.path.getsize(local) == int(pkg.returnSimple('packagesize')):
+                logging.info(
+                    "%s (%s/%s) already exists and appears to be complete" %
+                    (local, i, maxi))
+                continue
 
-        url = urljoin(repo.urls[0],remote)
+        url = urljoin(repo.urls[0], remote)
         logging.debug('url: %s' % url)
         if options.urls:
             print '%s' % url
@@ -275,8 +317,11 @@ def main():
 
         # Disable cache otherwise things won't download
         repo.cache = 0
-        logging.info('Downloading %s (%s) (%s/%s)' % (os.path.basename(remote), repo, i, maxi))
-        pkg.localpath = local # Hack: to set the localpath to what we want.
+        logging.info(
+            'Downloading %s (%s) (%s/%s)' %
+            (os.path.basename(remote), repo, i, maxi))
+        # Hack: to set the localpath to what we want.
+        pkg.localpath = local
         try:
             path = repo.getPackage(pkg)
         except yum.Errors.NoMoreMirrorsRepoError:

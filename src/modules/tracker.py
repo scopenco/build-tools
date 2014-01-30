@@ -9,6 +9,7 @@ import yum
 import logging
 import sys
 
+
 class Tracker(yum.YumBase):
     '''class for checking dependences'''
 
@@ -30,7 +31,8 @@ class Tracker(yum.YumBase):
             for po in self.whatProvides(r, f, v):
                 # if req always in dep dict then use it
                 if po.pkgtup in self.unprocessed.keys():
-                    logging.debug('matched %s to require for %s' % (po, req[0]))
+                    logging.debug(
+                        'matched %s to require for %s' % (po, req[0]))
                     self.deps[req] = po
                     return po
                 if po not in satisfiers:
@@ -41,7 +43,9 @@ class Tracker(yum.YumBase):
 
         if satisfiers:
             # if req not in dep list, calc the best and add to deps
-            logging.debug('available dep(s) %s to require for %s' % (' '.join([str(n) for n in satisfiers]), req[0]))
+            logging.debug(
+                'available dep(s) %s to require for %s' %
+                (' '.join([str(n) for n in satisfiers]), req[0]))
             best = self.bestPackagesFromList(satisfiers)[0]
             logging.debug('select dep %s to require for %s' % (best, req[0]))
             self.deps[req] = best
@@ -54,7 +58,7 @@ class Tracker(yum.YumBase):
 
         unresolved = []
 
-        logging.debug(getattr('===> %s <' % pkg, 'ljust')(88,'='))
+        logging.debug(getattr('===> %s <' % pkg, 'ljust')(88, '='))
         reqs = pkg.returnPrco('requires')
         provs = pkg.returnPrco('provides')
 
@@ -71,20 +75,25 @@ class Tracker(yum.YumBase):
                 dep = self.provide_pkg(req)
                 if dep is None:
                 # if cant find dep do error
-                    logging.critical('unresolvable dependency %s in %s'	% (req[0], pkg))
+                    logging.critical(
+                        'unresolvable dependency %s in %s' % (req[0], pkg))
                     sys.exit(1)
 
             if dep not in unresolved:
                 # logging.info('dep %s' % str(dep))
                 if dep.pkgtup not in self.unprocessed.keys():
                     if not options.urls:
-                        logging.info('adding %s for %s, required by %s' % (dep, req[0], pkg))
+                        logging.info(
+                            'adding %s for %s, required by %s' %
+                            (dep, req[0], pkg))
                     unresolved.append(dep)
                 else:
-                    logging.debug('always processed %s for %s, required by %s' % (dep, req[0], pkg))
+                    logging.debug(
+                        'always processed %s for %s, required by %s' %
+                        (dep, req[0], pkg))
 
         return unresolved
     #end def findDeps
 
 if __name__ == "__main__":
-    print __doc__ 
+    print __doc__
