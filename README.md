@@ -50,14 +50,17 @@ Contents
 Installing
 ----------
 
-The scripts from src/ directory  and repository/ can be placed in your $HOME dir 
+1) The scripts from src/ directory  and repository/ can be placed in your $HOME dir 
 or where you need. You should edit scripts and set python modules directory.
+2) Install build-tools from yum repo http://createrepo.com
+3) Use chef-kitchen and deploy cookbook https://github.com/scopenco/chef-build-tools for build creation
 
 Running 
 -------
 
-you can run build.sh or you build script with args:
-> ./build.sh
+you can run example build scripts:
+> ./build-el5.sh
+> ./build-el6.sh
 
 Detailed example in wiki.
 
