@@ -18,7 +18,7 @@ PROJECT_REPO="http://repo.domain.con/repo"
 # rpm old env
 rm -rf $TMPDIR
 # fild all packages and download to repo/RPMS
-python constructor.py -c $PROJECT -x $XML_DIR -p $TMPDIR/RPMS
+constructor.py -c $PROJECT -x $XML_DIR -p $TMPDIR/RPMS
 # exit if status is no 0
 if [ $? -ne 0 ]; then
     exit 1
@@ -29,7 +29,7 @@ mkdir -p ~/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
 echo '%_topdir %(echo $HOME)/rpmbuild' > ~/.rpmmacros
 
 # build project rpm
-python gen_spec.py -x $XML_DIR -c $PROJECT -s project_template > project.spec
+gen_spec.py -x $XML_DIR -c $PROJECT -s project_template > project.spec
 if [ $? -ne 0 ]; then
     exit 1
 fi
@@ -39,7 +39,7 @@ RPM=`rpmbuild -bb --rmspec project.spec 2>&1 | grep 'Wrote:' | cut -d ' ' -f2`
 cp -rvf $RPM $TMPDIR/RPMS
 
 # build release rpm
-python gen_spec.py -x $XML_DIR -c $PROJECT -s release_template > release.spec
+gen_spec.py -x $XML_DIR -c $PROJECT -s release_template > release.spec
 if [ $? -ne 0 ]; then
     exit 1
 fi
