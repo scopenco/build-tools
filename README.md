@@ -59,8 +59,10 @@ Running
 -------
 
 you can run example build scripts:
-> ./build-el5.sh
-> ./build-el6.sh
+```bash
+# build-el5.sh
+# build-el6.sh
+```
 
 Detailed example in wiki.
 
