@@ -6,6 +6,8 @@
 set -e
 set -x
 
+# reset locale
+export LC_ALL=C
 # local tmp directory where rpm packages will download to
 TMPDIR="repo-el6" 
 # path to repository 
