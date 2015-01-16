@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<role title='repository centos-base' >
+
+<!-- 
+  Base CentOS repository
+-->
+
+  <repository
+        name="centos-base" 
+        description="Base Repository CentOS-6 x86_64" 
+        baseurl="http://mirror.yandex.ru/centos/6/os/x86_64"
+        />
+</role>

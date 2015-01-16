@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<role title='repository centos-updates' >
+
+<!-- 
+  Updates CentOS repository with last updates
+-->
+
+  <repository
+        name="centos-updates" 
+        description="Updates Repository CentOS-6 x86_64" 
+        baseurl="http://mirror.yandex.ru/centos/6/updates/x86_64"
+        />
+</role>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project 
+        name="myproject"
+        summary="My First Project"
+        repository="http://repo.domain.com/pub/repo/"
+        version="0.1"
+        >
+
+  <role path="roles/centos-5-minimal.xml" />
+
+  <!-- python packages -->
+  <package name="python" />
+  <package name="python-IPy" />
+  <package name="python-simplejson" />
+
+  <!-- mysql packages -->
+  <package name="mysql-server" />
+
+  <role path="repos/centos-5-base.xml" />
+  <role path="repos/centos-5-updates.xml" />
+  <role path="repos/centos-5-epel.xml" />
+</project>
