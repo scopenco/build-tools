@@ -16,6 +16,8 @@ XML_DIR="repository"
 PROJECT="hosts/myproject/centos-5-example.xml"
 # uri of repo where to search yum repository after creation in production
 PROJECT_REPO="http://repo.domain.con/repo"
+# source repo
+SRC_REPO="http://mirror.yandex.ru/centos/5/os/x86_64"
 
 # rpm old env
 rm -rf $TMPDIR
@@ -52,9 +54,9 @@ cp -rvf $RPM $TMPDIR/RPMS
 
 # get anaconda iso need for pxe/kickstart setup
 mkdir $TMPDIR/images
-wget http://mirror.yandex.ru/centos/5/os/x86_64/images/stage2.img -O $TMPDIR/images/stage2.img
+wget $SRC_REPO/images/stage2.img -O $TMPDIR/images/stage2.img
 
 # get comps.xml need for anaconda installer and create yum rrepository 
-wget http://mirror.yandex.ru/centos/5/os/x86_64/repodata/comps.xml -O $TMPDIR/comps.xml
+wget $(get_comps_url.py $SRC_REPO/repodata/repomd.xml) -O $TMPDIR/comps.xml
 createrepo -g $(pwd)/$TMPDIR/comps.xml -d $TMPDIR
 rm -f $TMPDIR/comps.xml
