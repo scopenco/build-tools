@@ -41,6 +41,8 @@ def main():
     p.add_option("-u", "--urls", default=False, action="store_true",
                  help="Just list urls of what"
                       "would be downloaded, don't download")
+    p.add_option("-i", "--ignore_repos", default=False, action="store",
+                 help="ignore repos for download")
     p.add_option("-d", "--debug", action="store_true", dest="debug",
                  help="Print debugging information")
     options, arguments = p.parse_args()
@@ -291,6 +293,12 @@ def main():
     i = 0
     maxi = len(download_list)
 
+    # get ignore repos
+    if options.ignore_repos:
+        ignore_repos = [k.strip() for k in options.ignore_repos.split(',')]
+    else:
+        ignore_repos = []
+
     # list or download packages
     for pkg in download_list:
         i += 1
@@ -317,20 +325,19 @@ def main():
 
         # Disable cache otherwise things won't download
         repo.cache = 0
-        logging.info(
-            'Downloading %s (%s) (%s/%s)' %
-            (os.path.basename(remote), repo, i, maxi))
         # Hack: to set the localpath to what we want.
         pkg.localpath = local
         try:
-            path = repo.getPackage(pkg)
+            if repo.id.encode('latin1', 'ignore') not in ignore_repos:
+                logging.info('Downloading %s (%s) (%s/%s)' % (
+                    os.path.basename(remote), repo, i, maxi))
+                path = repo.getPackage(pkg)
+                if not os.path.exists(local) or not os.path.samefile(path, local):
+                    copy2(path, local)
         except yum.Errors.NoMoreMirrorsRepoError:
             logging.critical("No more mirrors, exit.")
             sys.exit(1)
 
-        if not os.path.exists(local) or not os.path.samefile(path, local):
-            copy2(path, local)
-#end del main
 
 if __name__ == '__main__':
     try:

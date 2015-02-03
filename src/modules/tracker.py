@@ -18,7 +18,6 @@ class Tracker(yum.YumBase):
 
         self.deps = {}
         self.unprocessed = {}
-    #end def __init__
 
     def provide_pkg(self, req):
         '''find the best pkg for dependence'''
@@ -51,7 +50,6 @@ class Tracker(yum.YumBase):
             self.deps[req] = best
             return best
         return None
-    #end def provide_pkg
 
     def findDeps(self, pkg, options):
         ''' find dependences for pkgs'''
@@ -74,7 +72,7 @@ class Tracker(yum.YumBase):
                 # find best pkg for dep
                 dep = self.provide_pkg(req)
                 if dep is None:
-                # if cant find dep do error
+                    # if cant find dep do error
                     logging.critical(
                         'unresolvable dependency %s in %s' % (req[0], pkg))
                     sys.exit(1)
@@ -82,10 +80,9 @@ class Tracker(yum.YumBase):
             if dep not in unresolved:
                 # logging.info('dep %s' % str(dep))
                 if dep.pkgtup not in self.unprocessed.keys():
-                    if not options.urls:
-                        logging.info(
-                            'adding %s for %s, required by %s' %
-                            (dep, req[0], pkg))
+                    logging.info(
+                        'adding %s for %s, required by %s' %
+                        (dep, req[0], pkg))
                     unresolved.append(dep)
                 else:
                     logging.debug(
@@ -93,7 +90,7 @@ class Tracker(yum.YumBase):
                         (dep, req[0], pkg))
 
         return unresolved
-    #end def findDeps
+
 
 if __name__ == "__main__":
     print __doc__
